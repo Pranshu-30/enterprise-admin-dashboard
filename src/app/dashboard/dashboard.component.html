@@ -1,0 +1,42 @@
+<div class="dashboard">
+  <h1>Dashboard</h1>
+
+  <div class="kpi-grid">
+    <app-kpi-card label="Total Users" [value]="totalUsers" [trend]="trendUsers" />
+    <app-kpi-card label="Revenue" [value]="totalRevenue | formatCurrency" [trend]="trendRevenue" />
+    <app-kpi-card label="Orders" [value]="totalOrders" [trend]="trendOrders" />
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-container">
+      <h2>Revenue Overview</h2>
+      <ejs-chart id="revenueChart" [primaryXAxis]="primaryXAxis" [primaryYAxis]="primaryYAxis" [title]="chartTitle">
+        <e-series-collection>
+          <e-series [dataSource]="chartData" type="Column" xName="month" yName="revenue" name="Revenue"></e-series>
+        </e-series-collection>
+      </ejs-chart>
+    </div>
+  </div>
+
+  <div class="activity-section">
+    <h2>Recent Activity</h2>
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>User</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of recentActivity$ | async; track trackByActivity($index, item)) {
+          <tr>
+            <td>{{ item.action }}</td>
+            <td>{{ item.user }}</td>
+            <td>{{ item.time }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

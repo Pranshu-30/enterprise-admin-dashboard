@@ -1,0 +1,66 @@
+<div class="user-form">
+  <h1>{{ isEdit ? 'Edit User' : 'Add User' }}</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" />
+        @if (form.get('name')?.invalid && form.get('name')?.touched) {
+          <span class="error">Required, min 2 characters</span>
+        }
+      </div>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" formControlName="username" />
+        @if (form.get('username')?.invalid && form.get('username')?.touched) {
+          <span class="error">Required</span>
+        }
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (form.get('email')?.invalid && form.get('email')?.touched) {
+        <span class="error">Valid email required</span>
+      }
+    </div>
+    <div class="form-group">
+      <label for="website">Website</label>
+      <input id="website" type="text" formControlName="website" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select id="role" formControlName="role">
+          @for (r of roles; track r) {
+            <option [value]="r">{{ r }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group checkbox">
+        <label><input type="checkbox" formControlName="isActive" /> Active</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Phones (FormArray)</label>
+      <div formArrayName="phones" class="phones">
+        @for (ctrl of phones.controls; track $index) {
+          <div class="phone-row">
+            <input type="text" [formControlName]="$index" placeholder="Phone" />
+            <button type="button" class="btn-remove" (click)="removePhone($index)" [disabled]="phones.length <= 1">−</button>
+          </div>
+        }
+      </div>
+      <button type="button" class="btn-add" (click)="addPhone()">+ Add phone</button>
+    </div>
+    @if (errorMessage) {
+      <div class="error-banner">{{ errorMessage }}</div>
+    }
+    <div class="actions">
+      <a routerLink="/users" class="btn-cancel">Cancel</a>
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Create') }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+<div class="product-list">
+  <div class="header">
+    <h1>Product Management</h1>
+    <div class="filters">
+      <input
+        type="text"
+        placeholder="Search by title or category"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearch($event)"
+      />
+      <select [ngModel]="categoryFilter()" (ngModelChange)="onCategoryChange($event)">
+        <option value="">All categories</option>
+        @for (cat of categories(); track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+      <button type="button" (click)="onSortChange()">
+        Sort price {{ sortOrder() === 'asc' ? '↑' : '↓' }}
+      </button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <p>Loading products...</p>
+  } @else {
+    <div class="product-grid">
+      @for (product of filteredProducts(); track trackByProduct($index, product)) {
+        <div class="product-card">
+          @if (product.image || product.imageUrl) {
+            <img [src]="product.image || product.imageUrl" [alt]="product.title" class="product-img" />
+          } @else {
+            <div class="product-img-placeholder">No image</div>
+          }
+          <div class="product-info">
+            <h3>{{ product.title }}</h3>
+            <span class="category">{{ product.category }}</span>
+            <span class="price">{{ product.price | formatCurrency }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

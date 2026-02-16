@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+/* Syncfusion Material theme (required for Grid, Chart, etc.) */
+@import '../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-grids/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-lists/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+
+/* Global app styles */
+:root {
+  --sidebar-bg: #1e293b;
+  --sidebar-text: #e2e8f0;
+  --toolbar-bg: #fff;
+  --border-color: #e2e8f0;
+  --text-secondary: #64748b;
+  --card-bg: #fff;
+  --hover-bg: #f1f5f9;
+  --table-header-bg: #f8fafc;
+  --login-bg: #f1f5f9;
+}
+
+body.theme-dark {
+  --toolbar-bg: #0f172a;
+  --border-color: #334155;
+  --text-secondary: #94a3b8;
+  --card-bg: #1e293b;
+  --hover-bg: #334155;
+  --table-header-bg: #334155;
+  --login-bg: #0f172a;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
