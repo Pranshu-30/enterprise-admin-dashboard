@@ -17,9 +17,9 @@ import type { UserRole } from '../../core/models';
   standalone: true,
 })
 export class HasRoleDirective {
-  private readonly auth = inject(AuthService);
-  private readonly templateRef = inject(TemplateRef<unknown>);
-  private readonly viewContainer = inject(ViewContainerRef);
+  private auth = inject(AuthService);
+  private templateRef = inject(TemplateRef<unknown>);
+  private viewContainer = inject(ViewContainerRef);
 
   private allowedRoles: UserRole[] = [];
   private hasView = false;

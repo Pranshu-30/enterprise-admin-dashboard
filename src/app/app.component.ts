@@ -13,6 +13,6 @@ export class AppComponent implements OnInit {
   private readonly settings = inject(SettingsService);
 
   ngOnInit(): void {
-    this.settings.applyStoredTheme();
+
   }
 }

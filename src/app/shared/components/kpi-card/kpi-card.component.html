@@ -1,0 +1,8 @@
+<div class="kpi-card">
+    <span class="kpi-label">{{ label }}</span>
+
+    <span class="kpi-value">{{ value }}</span>
+    <span *ngIf="trend !== undefined" class="kpi-trend" [ngClass]="trendClass">
+        {{ formattedTrend }}
+    </span>
+</div>

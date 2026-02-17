@@ -3,10 +3,6 @@ import { CanActivateFn, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import type { UserRole } from '../models';
 
-/**
- * Protects routes by role. Expects route data: { roles: UserRole[] }.
- * Allows access only if current user has one of the given roles.
- */
 export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const auth = inject(AuthService);
   const router = inject(Router);

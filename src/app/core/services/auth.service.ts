@@ -1,17 +1,13 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of, tap, catchError, map } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import type { User, UserRole, LoginRequest, LoginResponse } from '../models';
 
 const TOKEN_KEY = 'enterprise_admin_token';
 const USER_KEY = 'enterprise_admin_user';
 const ROLE_KEY = 'enterprise_admin_role';
 
-/**
- * Auth state and JWT handling. Persists token and user in localStorage.
- */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly currentUserSignal = signal<User | null>(this.getStoredUser());
@@ -24,12 +20,34 @@ export class AuthService {
   readonly isAuthenticated = computed(() => !!this.tokenSignal());
 
   constructor(
-    private readonly http: HttpClient,
-    private readonly router: Router
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.mockLogin(credentials).pipe(
+    return this.http.get<MockUser[]>('assets/mock-users.json').pipe(
+      map((users) => {
+        const found = users.find(
+          (u) =>
+            u.email.toLowerCase() === credentials.email.toLowerCase() &&
+            u.password === credentials.password
+        );
+
+        if (!found) {
+          throw new Error('Invalid email or password');
+        }
+        const role = found.role as UserRole;
+        const user: User = {
+          id: found.id,
+          name: found.name,
+          username: found.username,
+          email: found.email,
+          role,
+          isActive: true,
+        };
+        const token = `mock-token-${user.id}`;
+        return { token, user, role };
+      }),
       tap((res) => {
         this.setSession(res.token, res.user, res.role);
       })
@@ -85,26 +103,12 @@ export class AuthService {
     const r = localStorage.getItem(ROLE_KEY);
     return (r as UserRole) || null;
   }
-
-  /** Mock login: accepts any email with password 'password'. Assigns role by email. */
-  private mockLogin(credentials: LoginRequest): Observable<LoginResponse> {
-    const role = this.getRoleFromEmail(credentials.email);
-    const user: User = {
-      id: 1,
-      name: 'Demo User',
-      username: 'demouser',
-      email: credentials.email,
-      role,
-      isActive: true,
-    };
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${btoa(JSON.stringify({ sub: user.id, role }))}.sign`;
-    return of({ token, user, role });
-  }
-
-  private getRoleFromEmail(email: string): UserRole {
-    const e = email.toLowerCase();
-    if (e.includes('admin')) return 'Admin';
-    if (e.includes('manager')) return 'Manager';
-    return 'Viewer';
-  }
+}
+interface MockUser {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  role: UserRole;
 }

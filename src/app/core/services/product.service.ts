@@ -8,7 +8,7 @@ const PRODUCTS_API = environment.apiProducts ?? `${environment.apiUrl}/products`
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  constructor(private readonly http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(PRODUCTS_API);

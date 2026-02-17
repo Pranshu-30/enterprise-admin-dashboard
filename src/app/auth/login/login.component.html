@@ -5,27 +5,32 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="admin@example.com" />
-        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-          <span class="error">Valid email is required</span>
-        }
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="admin@example.com" />
+        <span class="error" *ngIf="isInvalid('email')">
+          Valid email is required
+        </span>
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="••••••••" />
-        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-          <span class="error">Min 6 characters</span>
-        }
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="••••••••" />
+        <span class="error" *ngIf="isInvalid('password')">
+          Minimum 6 characters required
+        </span>
       </div>
-      @if (errorMessage) {
-        <div class="error-banner">{{ errorMessage }}</div>
-      }
+      <p class="error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+
       <button type="submit" class="btn-primary" [disabled]="loading">
         {{ loading ? 'Signing in...' : 'Sign in' }}
       </button>
     </form>
-
-    <p class="hint">Use any email; include "admin" or "manager" for role. Password: any 6+ chars.</p>
+    <!-- <p class="hint">
+      Demo users (from local JSON):<br />
+      admin&#64;example.com / admin123 (Admin),<br />
+      manager&#64;example.com / manager123 (Manager),<br />
+      viewer&#64;example.com / viewer123 (Viewer)
+    </p> -->
   </div>
 </div>

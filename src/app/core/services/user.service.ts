@@ -6,9 +6,9 @@ import type { User, UserCreateDto } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly baseUrl = environment.apiUsers;
+  private baseUrl = environment.apiUsers;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl);

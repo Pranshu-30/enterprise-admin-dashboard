@@ -1,31 +1,36 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  errorMessage = '';
+
   loading = false;
+  errorMessage = '';
+
+  loginForm = this.fb.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+  });
 
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly auth: AuthService,
-    private readonly router: Router,
-  ) {
-    this.loginForm = this.fb.nonNullable.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router
+  ) {}
+
+  isInvalid(controlName: 'email' | 'password'): boolean {
+    const control = this.loginForm.get(controlName);
+    return !!control && control.invalid && control.touched;
   }
 
   onSubmit(): void {
@@ -33,17 +38,19 @@ export class LoginComponent {
       this.loginForm.markAllAsTouched();
       return;
     }
-    this.errorMessage = '';
+
     this.loading = true;
+    this.errorMessage = '';
+
     this.auth.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
-        this.loading = false;
         this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
+      error: err => {
+        this.errorMessage = err?.message || 'Login failed';
         this.loading = false;
-        this.errorMessage = err?.message ?? 'Login failed';
       },
+      complete: () => (this.loading = false)
     });
   }
 }

@@ -14,10 +14,10 @@ import type { UserCreateDto, UserRole } from '../../core/models';
   styleUrl: './user-form.component.scss',
 })
 export class UserFormComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
-  private readonly userService = inject(UserService);
-  private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+  private userService = inject(UserService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   form!: FormGroup;
   isEdit = false;
@@ -25,7 +25,7 @@ export class UserFormComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  readonly roles: UserRole[] = ['Admin', 'Manager', 'Viewer'];
+  roles: UserRole[] = ['Admin', 'Manager', 'Viewer'];
 
   get phones(): FormArray {
     return this.form.get('phones') as FormArray;

@@ -8,7 +8,7 @@ import { Directive, ElementRef, Input, OnInit, inject } from '@angular/core';
   standalone: true,
 })
 export class InactiveUserDirective implements OnInit {
-  private readonly el = inject(ElementRef<HTMLElement>);
+  private el = inject(ElementRef<HTMLElement>);
 
   @Input() set appInactiveUser(value: boolean) {
     this.isInactive = value === true;

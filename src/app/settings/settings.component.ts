@@ -17,9 +17,6 @@ export class SettingsComponent {
 
   constructor(readonly settings: SettingsService) {}
 
-  setTheme(t: Theme): void {
-    this.settings.setTheme(t);
-  }
 
   setLanguage(lang: Language): void {
     this.settings.setLanguage(lang);

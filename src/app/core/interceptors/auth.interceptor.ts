@@ -4,9 +4,6 @@ import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
-/**
- * Attaches JWT token to outgoing requests and redirects to login on 401.
- */
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const auth = inject(AuthService);
   const router = inject(Router);

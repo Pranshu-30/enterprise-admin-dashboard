@@ -2,30 +2,30 @@
   <aside class="sidebar">
     <div class="brand">Enterprise Admin</div>
     <nav class="nav">
-      @for (item of navItems; track item.route) {
-        @if (canSee(item)) {
-          <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }" class="nav-link">
-            {{ item.label }}
-          </a>
-        }
-      }
+      <ng-container *ngFor="let item of navItems">
+        <a *ngIf="canSee(item)" [routerLink]="item.route" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }" class="nav-link">
+          {{ item.label }}
+        </a>
+      </ng-container>
     </nav>
   </aside>
   <div class="main">
     <header class="toolbar">
       <span class="toolbar-title">Enterprise Admin Dashboard</span>
       <div class="toolbar-actions">
-        <button type="button" class="btn-icon" (click)="toggleTheme()" [attr.aria-label]="theme() === 'dark' ? 'Switch to light' : 'Switch to dark'">
-          {{ theme() === 'dark' ? '☀️' : '🌙' }}
+
+        <span class="user-name" *ngIf="currentUser() as user">
+          {{ user.name }}
+        </span>
+
+        <button type="button" class="btn-logout" *ngIf="currentUser()" (click)="logout()">
+          Logout
         </button>
-        @if (currentUser(); as user) {
-          <span class="user-name">{{ user.name }}</span>
-          <button type="button" class="btn-logout" (click)="logout()">Logout</button>
-        }
       </div>
     </header>
     <main class="content">
-      <router-outlet />
+      <router-outlet></router-outlet>
     </main>
   </div>
 </div>

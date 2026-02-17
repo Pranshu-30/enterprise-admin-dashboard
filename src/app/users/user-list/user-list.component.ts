@@ -1,20 +1,11 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  OnInit,
-  ViewChild,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, debounceTime, distinctUntilChanged, startWith } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { AuthService } from '../../core/services/auth.service';
-import type { User, UserRole } from '../../core/models';
-import { InactiveUserDirective } from '../../shared/directives/inactive-user.directive';
-import { HasRoleDirective } from '../../shared/directives/has-role.directive';
+import type { User } from '../../core/models';
 import { GridModule, PageService, SortService, FilterService, ToolbarService, SearchService } from '@syncfusion/ej2-angular-grids';
 
 @Component({
@@ -25,8 +16,6 @@ import { GridModule, PageService, SortService, FilterService, ToolbarService, Se
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    InactiveUserDirective,
-    HasRoleDirective,
     GridModule,
   ],
   providers: [PageService, SortService, FilterService, ToolbarService, SearchService],
@@ -35,10 +24,10 @@ import { GridModule, PageService, SortService, FilterService, ToolbarService, Se
 })
 export class UserListComponent implements OnInit {
 
-  readonly searchControl = new FormControl('', { nonNullable: true });
-  readonly users = signal<User[]>([]);
-  readonly loading = signal(false);
-  readonly currentRole = this.auth.currentRole;
+    searchControl = new FormControl('', { nonNullable: true });
+    users = signal<User[]>([]);
+    loading = signal(false);
+    currentRole = this.auth.currentRole;
 
   pageSettings = { pageSize: 10, pageSizes: [5, 10, 20, 50] };
   filterSettings = { type: 'Excel' };
@@ -48,7 +37,7 @@ export class UserListComponent implements OnInit {
   private allUsers: User[] = [];
 
   constructor(
-    private readonly userService: UserService,
+    private userService: UserService,
     readonly auth: AuthService,
   ) {}
 

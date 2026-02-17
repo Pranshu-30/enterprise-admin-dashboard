@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, OnInit, signal, computed } from '@a
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
-import { SearchPipe } from '../../shared/pipes/search.pipe';
 import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
 import type { Product } from '../../core/models';
 
@@ -10,24 +9,23 @@ import type { Product } from '../../core/models';
   selector: 'app-product-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, FormsModule, SearchPipe, FormatCurrencyPipe],
+  imports: [CommonModule, FormsModule, FormatCurrencyPipe],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit {
-  readonly products = signal<Product[]>([]);
-  readonly loading = signal(false);
-  readonly searchQuery = signal('');
-  readonly categoryFilter = signal<string>('');
-  readonly sortOrder = signal<'asc' | 'desc'>('asc');
-
-  readonly categories = computed(() => {
-    const list = this.products();
-    const set = new Set(list.map((p) => p.category).filter(Boolean));
-    return Array.from(set) as string[];
+  products = signal<Product[]>([]);
+  loading = signal(false);
+  searchQuery = signal('');
+  categoryFilter = signal<string>('');
+  sortOrder = signal<'asc' | 'desc'>('asc');
+  categories = computed(() => {
+  const list = this.products();
+  const set = new Set(list.map((p) => p.category).filter(Boolean));
+  return Array.from(set) as string[];
   });
 
-  readonly filteredProducts = computed(() => {
+    filteredProducts = computed(() => {
     let list = this.products();
     const q = this.searchQuery().trim().toLowerCase();
     const cat = this.categoryFilter();
@@ -49,7 +47,7 @@ export class ProductListComponent implements OnInit {
     return list;
   });
 
-  constructor(private readonly productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts();
