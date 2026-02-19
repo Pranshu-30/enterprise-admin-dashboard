@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product.service';
@@ -14,69 +14,88 @@ import type { Product } from '../../core/models';
   styleUrl: './product-list.component.scss',
 })
 export class ProductListComponent implements OnInit {
-  products = signal<Product[]>([]);
-  loading = signal(false);
-  searchQuery = signal('');
-  categoryFilter = signal<string>('');
-  sortOrder = signal<'asc' | 'desc'>('asc');
-  categories = computed(() => {
-  const list = this.products();
-  const set = new Set(list.map((p) => p.category).filter(Boolean));
-  return Array.from(set) as string[];
-  });
 
-    filteredProducts = computed(() => {
-    let list = this.products();
-    const q = this.searchQuery().trim().toLowerCase();
-    const cat = this.categoryFilter();
-    const order = this.sortOrder();
-    if (q) {
-      list = list.filter(
-        (p) =>
-          p.title?.toLowerCase().includes(q) ||
-          p.category?.toLowerCase().includes(q),
-      );
-    }
-    if (cat) {
-      list = list.filter((p) => p.category === cat);
-    }
-    list = [...list].sort((a, b) => {
-      const diff = (a.price ?? 0) - (b.price ?? 0);
-      return order === 'asc' ? diff : -diff;
-    });
-    return list;
-  });
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories: string[] = [];
 
-  constructor(private productService: ProductService) {}
+  loading = false;
+  searchQuery = '';
+  categoryFilter = '';
+  sortOrder: 'asc' | 'desc' = 'asc';
+
+  constructor(private productService: ProductService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
   loadProducts(): void {
-    this.loading.set(true);
+    this.loading = true;
     this.productService.getProducts().subscribe({
       next: (list) => {
-        this.products.set(list);
-        this.loading.set(false);
+        this.products = list;
+        this.setCategories();
+        this.applyFilters();
+        this.loading = false;
+        this.cdr.markForCheck();
       },
-      error: () => this.loading.set(false),
+      error: () => (this.loading = false),
     });
   }
 
+  setCategories(): void {
+    const set = new Set(
+      this.products.map((p) => p.category).filter(Boolean)
+    );
+    this.categories = Array.from(set) as string[];
+  }
+
+  applyFilters(): void {
+    let list = [...this.products];
+
+    const q = this.searchQuery.trim().toLowerCase();
+
+    if (q) {
+      list = list.filter(
+        (p) =>
+          p.title?.toLowerCase().includes(q) ||
+          p.category?.toLowerCase().includes(q)
+      );
+    }
+
+    if (this.categoryFilter) {
+      list = list.filter((p) => p.category === this.categoryFilter);
+    }
+
+    list.sort((a, b) => {
+      const diff = (a.price ?? 0) - (b.price ?? 0);
+      return this.sortOrder === 'asc' ? diff : -diff;
+    });
+
+    this.filteredProducts = list;
+  }
+
   onSearch(value: string): void {
-    this.searchQuery.set(value);
+    this.searchQuery = value;
+    this.applyFilters();
   }
 
   onCategoryChange(value: string): void {
-    this.categoryFilter.set(value);
+    this.categoryFilter = value;
+    this.applyFilters();
   }
 
   onSortChange(): void {
-    this.sortOrder.update((o) => (o === 'asc' ? 'desc' : 'asc'));
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    this.applyFilters();
   }
 
   trackByProduct(_index: number, p: Product): number {
     return p.id;
+  }
+
+  trackByCategory(_index: number, cat: string): string {
+    return cat;
   }
 }

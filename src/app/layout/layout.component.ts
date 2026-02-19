@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../core/services/auth.service';
@@ -13,7 +13,6 @@ interface NavItem {
 @Component({
   selector: 'app-layout',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
@@ -26,6 +25,7 @@ export class LayoutComponent {
     { label: 'Dashboard', route: '/dashboard' },
     { label: 'Users', route: '/users', roles: ['Admin', 'Manager'] },
     { label: 'Products', route: '/products' },
+    { label: 'Settings', route: '/settings' },
   ];
   constructor(private auth: AuthService) {}
   logout(): void {

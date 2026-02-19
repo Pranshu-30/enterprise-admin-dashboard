@@ -1,17 +1,7 @@
-import {
-  Directive,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-  inject,
-  effect,
-} from '@angular/core';
+import {Directive,Input,TemplateRef,ViewContainerRef,inject,effect} from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import type { UserRole } from '../../core/models';
 
-/**
- * Structural directive *appHasRole="['Admin','Manager']". Shows template only if current user has one of the roles.
- */
 @Directive({
   selector: '[appHasRole]',
   standalone: true,

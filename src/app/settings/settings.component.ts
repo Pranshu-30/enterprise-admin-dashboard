@@ -12,11 +12,11 @@ import { SettingsService, Theme, Language } from '../core/services/settings.serv
   styleUrl: './settings.component.scss',
 })
 export class SettingsComponent {
-  readonly theme = this.settings.theme;
-  readonly language = this.settings.language;
 
-  constructor(readonly settings: SettingsService) {}
+  theme = this.settings.theme;
+  language = this.settings.language;
 
+  constructor(public settings: SettingsService) { }
 
   setLanguage(lang: Language): void {
     this.settings.setLanguage(lang);

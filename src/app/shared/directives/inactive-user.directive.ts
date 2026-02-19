@@ -1,8 +1,5 @@
 import { Directive, ElementRef, Input, OnInit, inject } from '@angular/core';
 
-/**
- * Highlights inactive users (e.g. dimmed style). Use with [appInactiveUser]="user.isActive === false"
- */
 @Directive({
   selector: '[appInactiveUser]',
   standalone: true,

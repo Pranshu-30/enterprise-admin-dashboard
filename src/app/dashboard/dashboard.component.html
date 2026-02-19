@@ -29,13 +29,11 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of recentActivity$ | async; track trackByActivity($index, item)) {
-          <tr>
-            <td>{{ item.action }}</td>
-            <td>{{ item.user }}</td>
-            <td>{{ item.time }}</td>
-          </tr>
-        }
+        <tr *ngFor="let item of recentActivity$ | async; trackBy: trackByActivity">
+          <td>{{ item.action }}</td>
+          <td>{{ item.user }}</td>
+          <td>{{ item.time }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

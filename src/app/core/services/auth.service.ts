@@ -10,14 +10,14 @@ const ROLE_KEY = 'enterprise_admin_role';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly currentUserSignal = signal<User | null>(this.getStoredUser());
-  private readonly tokenSignal = signal<string | null>(this.getStoredToken());
-  private readonly roleSignal = signal<UserRole | null>(this.getStoredRole());
+  private currentUserSignal = signal<User | null>(this.getStoredUser());
+  private tokenSignal = signal<string | null>(this.getStoredToken());
+  private roleSignal = signal<UserRole | null>(this.getStoredRole());
 
-  readonly currentUser = this.currentUserSignal.asReadonly();
-  readonly token = this.tokenSignal.asReadonly();
-  readonly currentRole = this.roleSignal.asReadonly();
-  readonly isAuthenticated = computed(() => !!this.tokenSignal());
+  currentUser = this.currentUserSignal.asReadonly();
+  token = this.tokenSignal.asReadonly();
+  currentRole = this.roleSignal.asReadonly();
+  isAuthenticated = computed(() => !!this.tokenSignal());
 
   constructor(
     private http: HttpClient,

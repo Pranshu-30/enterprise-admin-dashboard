@@ -1,9 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-/**
- * Simple search pipe: filters items by a string property matching query (case-insensitive).
- * Use with caution on large lists; prefer server-side or component filtering for big data.
- */
 @Pipe({
   name: 'search',
   standalone: true,

@@ -15,6 +15,7 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
+  margin-left:50px ;
 }
 
 .charts-row {
@@ -25,10 +26,13 @@
   background: var(--card-bg, #fff);
   border-radius: 8px;
   padding: 1rem;
+  width: 1100px;
+  margin-left: 100px; ;
   border: 1px solid var(--border-color, #e2e8f0);
 
   #revenueChart {
     height: 320px;
+    width: 1000px;
   }
 }
 
