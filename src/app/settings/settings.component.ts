@@ -21,4 +21,8 @@ export class SettingsComponent {
   setLanguage(lang: Language): void {
     this.settings.setLanguage(lang);
   }
+
+    setTheme(t: Theme): void {
+    this.settings.setTheme(t);
+  }
 }

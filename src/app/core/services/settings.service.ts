@@ -20,6 +20,12 @@ export class SettingsService {
     localStorage.setItem(LANG_KEY, lang);
   }
 
+  setTheme(theme: Theme): void {
+    this.themeSignal.set(theme);
+    localStorage.setItem(THEME_KEY, theme);
+    this.applyThemeOnBody(theme);
+  }
+
   private getStoredTheme(): Theme {
     const t = localStorage.getItem(THEME_KEY);
     return (t === 'dark' || t === 'light') ? t : 'light';
@@ -30,4 +36,8 @@ export class SettingsService {
     return (l === 'es' || l === 'en') ? l : 'en';
   }
 
+    private applyThemeOnBody(theme: Theme): void {
+    document.body.classList.remove('theme-light', 'theme-dark');
+    document.body.classList.add(theme === 'dark' ? 'theme-dark' : 'theme-light');
+  }
 }

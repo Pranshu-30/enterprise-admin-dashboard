@@ -2,6 +2,28 @@
   <h1>Settings</h1>
 
   <section class="setting-section">
+    <h2>Theme</h2>
+    <div class="theme-options">
+      <button
+        type="button"
+        class="theme-btn"
+        [class.active]="theme() === 'light'"
+        (click)="setTheme('light')"
+      >
+        Light
+      </button>
+      <button
+        type="button"
+        class="theme-btn"
+        [class.active]="theme() === 'dark'"
+        (click)="setTheme('dark')"
+      >
+        Dark
+      </button>
+    </div>
+  </section>
+
+  <section class="setting-section">
     <h2>Language</h2>
     <select [ngModel]="language()" (ngModelChange)="setLanguage($event)">
       <option value="en">English</option>
