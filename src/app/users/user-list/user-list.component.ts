@@ -91,4 +91,14 @@ export class UserListComponent implements OnInit {
   canDelete(): boolean {
     return this.auth.hasRole('Admin');
   }
+
+  deleteUser(id: number): void {
+  if (!confirm('Delete this user?')) return;
+  this.userService.deleteUser(id).subscribe({
+    next: () => {
+      this.allUsers = this.allUsers.filter(u => u.id !== id);
+      this.applySearch(this.searchControl.value);
+    }
+  });
+}
 }

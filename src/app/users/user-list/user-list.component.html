@@ -3,24 +3,12 @@
     <h1>User Management</h1>
     <div class="toolbar-row">
       <a routerLink="/users/new" class="btn-add" *ngIf="canEdit()">Add User</a>
-      <input
-        type="text"
-        class="search-input"
-        [formControl]="searchControl"
-        placeholder="Search users (debounced)..."
-      />
+      <input type="text" class="search-input" [formControl]="searchControl" placeholder="Search users (debounced)..." />
     </div>
   </div>
 
-  <ejs-grid
-    [dataSource]="users()"
-    [allowPaging]="true"
-    [allowSorting]="true"
-    [allowFiltering]="true"
-    [pageSettings]="pageSettings"
-    [filterSettings]="filterSettings"
-    [toolbar]="toolbar"
-  >
+  <ejs-grid [dataSource]="users()" [allowPaging]="true" [allowSorting]="true" [allowFiltering]="true"
+    [pageSettings]="pageSettings" [filterSettings]="filterSettings" [toolbar]="toolbar">
     <e-columns>
       <e-column field="id" headerText="ID" width="80" type="number"></e-column>
       <e-column field="name" headerText="Name" width="150"></e-column>
@@ -28,6 +16,16 @@
       <e-column field="email" headerText="Email" width="200"></e-column>
       <e-column field="phone" headerText="Phone" width="130"></e-column>
       <e-column field="website" headerText="Website" width="120"></e-column>
+      <e-column headerText="Actions" width="160">
+        <ng-template #template let-data>
+          <button class="btn-edit" *ngIf="canEdit()" [routerLink]="['/users/edit', data.id]">
+            Edit
+          </button>
+          <button class="btn-delete" *ngIf="canDelete()" (click)="deleteUser(data.id)">
+            Delete
+          </button>
+        </ng-template>
+      </e-column>
     </e-columns>
   </ejs-grid>
 </div>
